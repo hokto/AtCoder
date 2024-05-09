@@ -24,3 +24,14 @@ send \"${PASSWORD}\n\"
 expect \"$\"
 exit 0
 "
+
+expect -c "
+set timeout 3
+spawn acss login atcoder
+expect \"Username:\"
+send \"${USERNAME}\n\"
+expect \"Password:\"
+send \"${PASSWORD}\n\"
+expect \"$\"
+exit 0
+"
