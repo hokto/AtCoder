@@ -1,9 +1,3 @@
-import sys
-N,K=list(map(int,sys.stdin.readline().rstrip().split()))
-P=list(map(int,sys.stdin.readline().rstrip().split()))
-Q = [-1 for i in range(N)]
-for i,p in enumerate(P):
-    Q[p-1]=i
 """
     Implement BinarySearchTree by RedBlackTree.
 """
@@ -348,6 +342,7 @@ class BinarySearchTree:
     def clear(self) -> None:
         self._root = self._NIL
     
+    # TODO: 実装ミスしてるかも→未確認
     def count(self,key: Any) -> None:
         x: self._Node = self._root
         cnt = 0
@@ -379,14 +374,31 @@ class BinarySearchTree:
             else:
                 x = x.r
         return y.key
-bst = BinarySearchTree()
-for i in range(K-1):
-    bst.insert(Q[i])
-ans = N
-for i in range(K-1,N):
-    bst.insert(Q[i])
-    mn = bst.min()
-    mx = bst.max()
-    ans = min(ans,abs(mx-mn)) 
-    bst.delete(Q[i-K+1])
-print(ans)
+L,Q = list(map(int,input().split()))
+from functools import total_ordering
+
+@total_ordering
+class Interval:
+    def __init__(self,l,r) -> None:
+        self.l = l
+        self.r = r
+    def __eq__(self, value) -> bool:
+        return self.r == value.r
+    def __lt__(self,value) -> bool:
+        return self.r < value.r
+bst = BinarySearchTree(max_e=Interval(-10**10,-10**10),min_e=Interval(10**10,10**10))
+bst.insert(Interval(0,L))
+for q in range(Q):
+    c,x = list(map(int,input().split()))
+    if c==1:
+        interval = bst.lower_bound(Interval(-1,x))
+        l = interval.l
+        r = interval.r 
+        bst.delete(Interval(l,r))
+        bst.insert(Interval(l,x))
+        bst.insert(Interval(x,r))
+    else:
+        bst.init_orders()
+        interval = bst.lower_bound(Interval(-1,x))
+        print(interval.r - interval.l)
+    print(f"size:{bst.get_size()}")
