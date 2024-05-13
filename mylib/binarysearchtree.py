@@ -2,13 +2,12 @@
     Implement BinarySearchTree by RedBlackTree.
 """
 from typing import Any, List,Union
-#from enum import Enum
 class BinarySearchTree:
     # color attribute class
     class _RB_Color:
         black = 0
         red = 1
-    # include vertex infomation
+    # include some attribute(parent,left-child,right-child,key,color,subroot-size,subroot-min,subroot-max)
     class _Node:
         def __init__(self,p: Union['_Node']=None,l: Union['_Node']=None,r: Union['_Node']=None,key: Union[Any]=None, color: Union['_RB_Color']=None) -> None:
             self.p: self._Node = p
