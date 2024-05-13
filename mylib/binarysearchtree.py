@@ -354,24 +354,22 @@ class BinarySearchTree:
             else:
                 x = x.r
         return cnt
-    # TODO: 実装ミスしているため修正
     def lower_bound(self,key: Any) -> Any:
         y: self._Node = self._NIL
         x: self._Node = self._root
         while(x != self._NIL):
-            y = x
             if(x.key >= key):
+                y = x
                 x = x.l
             else:
                 x = x.r
         return y.key
-    # TODO: lower_boundと同様 
     def upper_bound(self,key: Any) -> Any:
         y: self._Node = self._NIL
         x: self._Node = self._root
         while(x != self._NIL):
-            y = x
             if(x.key > key):
+                y = x
                 x = x.l
             else:
                 x = x.r
