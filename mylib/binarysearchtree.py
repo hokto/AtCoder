@@ -259,7 +259,7 @@ class BinarySearchTree:
             y.l.p = y
             y.color = z.color
         while(w!=self._NIL):
-            w.size -= 1
+            w.size = w.l.size+w.r.size+1
             if w.key < w.l.min:
                 w.min = w.key
             else:
@@ -342,7 +342,6 @@ class BinarySearchTree:
     def clear(self) -> None:
         self._root = self._NIL
     
-    # TODO: 実装ミスしてるかも→未確認
     def count(self,key: Any) -> None:
         x: self._Node = self._root
         cnt = 0
