@@ -1,11 +1,11 @@
 """
     Implement TrieTree
 """
-from typing import List,Any
+from typing import List
 class TrieTree:
     # TrieTree's node structure
     class _TrieNode:
-        def __init__(self,dist:int,char_size:int) -> None:
+        def __init__(self,dist,char_size:int) -> None:
             self.next: List[int] = [-1 for _ in range(char_size)]
             self.common: int = 0 
             self.accept: List[int] = []
@@ -17,7 +17,6 @@ class TrieTree:
         self.base_ord: int = ord(base)
         self.nodes: List[TrieTree._TrieNode] = []
         self.root = 0
-        self.prefix_cnt:int = 0
         self.nodes.append(TrieTree._TrieNode(dist=self.root,char_size=self.char_size))
     
     def add_direct(self,word: str, word_id: int) -> None:
@@ -31,12 +30,11 @@ class TrieTree:
                 self.nodes.append(TrieTree._TrieNode(dist=dist,char_size=self.char_size))
             self.nodes[node_id].common += 1
             node_id = next_id
-            self.prefix_cnt += self.nodes[next_id].common
         self.nodes[node_id].common += 1
         self.nodes[node_id].accept.append(word_id)
     
     def add(self,word: str) -> None:
-        self.add_direct(word=word,word_id=self.nodes[0].common)
+        self.add_direct(word,self.nodes[0].common)
     
     def search(self,word: str, prefix:bool = False) -> bool:
         node_id: int = 0
@@ -56,14 +54,3 @@ class TrieTree:
     
     def size(self) -> int:
         return len(self.nodes)
-    
-    def get_prefix_cnt(self) -> int:
-        return self.prefix_cnt
-    
-N = int(input())
-S = list(map(str,input().split()))
-trie = TrieTree(26,"a")
-for s in S:
-    trie.add(s)
-
-print(trie.get_prefix_cnt()) 
