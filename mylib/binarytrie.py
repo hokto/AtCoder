@@ -126,6 +126,8 @@ class BinaryTrie:
     
     def get_current_node(self,node: _Node,b:int)  -> _Node:
         while(node):
+            if(b<0):
+                break
             self._eval(node=node,b=b)
             if(node.left):
                 node = node.left
@@ -135,9 +137,9 @@ class BinaryTrie:
         return node
     
     def get_next_node(self,node: _Node,b: int) -> _Node:
-        while(node.prev):
+        while(node.prev is not None):
             if(node == node.prev.left and node.prev.right):
-                return self.get_current_val(node=node,b=b)
+                return self.get_current_node(node=node,b=b)
             node = node.prev
             b+=1
         return node
@@ -169,3 +171,6 @@ class BinaryTrie:
     def xor_all(self,val: int) -> None:
         if(self.root):
             self.root.lazy ^= val
+            
+    def __getitem__(self,position: int) -> int:
+        return self.kth_element(k=position)
