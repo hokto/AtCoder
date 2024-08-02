@@ -1,0 +1,19 @@
+{
+  "contest": {
+    "id": "ahc035",
+    "title": "ALGO ARTIS Programming Contest 2024 Summer（AtCoder Heuristic Contest 035）",
+    "url": "https://atcoder.jp/contests/ahc035"
+  },
+  "tasks": [
+    {
+      "id": "ahc035_a",
+      "label": "A",
+      "title": "Breed Improvement",
+      "url": "https://atcoder.jp/contests/ahc035/tasks/ahc035_a",
+      "directory": {
+        "path": "a",
+        "testdir": "tests"
+      }
+    }
+  ]
+}
