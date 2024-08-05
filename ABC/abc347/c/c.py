@@ -16,7 +16,22 @@ def myin_sp_s():
     return list(map(str,myin_sp()))
 
 def main():
-    pass
+    N,A,B = myin_sp_i()
+    D = myin_sp_i()
+    DD = [0]*N
+    for i in range(N):
+        DD[i] = D[i]%(A+B)
+    DD.sort()
+    ans = False
+    if DD[-1]-DD[0]<A:
+        ans = True
+    for i in range(1,N):
+        if A+B+DD[i-1]-DD[i]<A:
+            ans = True
+    if ans:
+        print("Yes")
+    else:
+        print("No")
 
 if __name__ == "__main__":
     main()
