@@ -17,39 +17,24 @@ def myin_sp_s():
 
 
 INF = 10**15
-def dp(v,p,memo,N,G):
-    if memo[v]<INF:
-        return memo[v]
-    sum_e = 0
+def dfs(v,p,cost,G,dist):
+    dist[v]=cost
     for vv,c in G[v]:
         if vv==p: continue
-        e = c+dp(vv,v,memo,N,G)
-        sum_e+=e
-    memo[v] = sum_e
-    return memo[v]
-    
-def dfs(v,p,memo,N,G,sum):
-    ans = INF
-    s = sum
+        dfs(vv,v,cost+c,G,dist)
+        
+def dfs2(v,p,g,G):
+    if v==g:
+        return True,0
+    res=0
+    flag = False
     for vv,c in G[v]:
-        if vv==p:
-            s+=c
-    sum_e = s
-    max_e = s
-    for vv,c in G[v]:
-        if vv==p:
-            continue
-        e = c+dp(vv,v,memo,N,G)
-        sum_e += e
-        if max_e < e:
-            max_e = e
-        ans = min(ans,dfs(vv,v,memo,N,G,s))
-    if sum_e==max_e:
-        return INF
-    
-    ans=min(ans,(sum_e-max_e)*2+max_e)
-    print(ans)
-    return ans
+        if vv==p: continue
+        f,cost = dfs2(vv,v,g,G)
+        res+=cost+c
+        if not f: res+=c
+        flag|=f
+    return flag,res
 def main():
     N = int(myin())
     G=[[] for i in range(N)]
@@ -59,8 +44,23 @@ def main():
         b-=1
         G[a].append((b,c))
         G[b].append((a,c))
-    memo = [INF for i in range(N)]
-    sum = dp(0,-1,memo,N,G)
-    print(dfs(0,-1,memo,N,G,0))
+    dist1 = [INF]*N
+    dfs(0,-1,0,G,dist1)
+    next_r = -1
+    mx = 0
+    for i in range(N):
+        if mx < dist1[i]:
+            mx = dist1[i]
+            next_r = i
+    dist2 = [INF]*N
+    dfs(next_r,-1,0,G,dist2)
+    g = -1
+    mx = 0
+    for i in range(N):
+        if mx<dist2[i]:
+            mx = dist2[i]
+            g = i
+    #print(next_r,g)
+    print(dfs2(next_r,-1,g,G)[1])
 if __name__ == "__main__":
     main()

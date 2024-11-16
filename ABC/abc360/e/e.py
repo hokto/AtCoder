@@ -18,18 +18,23 @@ def myin_sp_s():
 def main():
     from atcoder.math import inv_mod
     import math
+    # 左端か否かで考える
+    # 左端以外は同様の操作になることから等確率で黒色があるはずなので，左端の確率pに対しそれぞれ(1-p)/(N-1)(\therefore (1-p)/(N-1)*(N-1)=1-p)
+    # dp[k]:=k回の操作後に左端に黒色がある確率
+    # 左端に黒色が来るためには，1. 直前にもあって左端同士を選ぶor左端以外同士を選ぶ 2.直前にはなくて左端以外のところから持ってくる の2つの可能性がある
+    # 1.が起きる確率は(1+(N-1)^2)/N^2 2.が起きる確率は2/N^2
+    # dp[k]=dp[k-1]*(1+(N-1)^2)/N^2+(1-dp[k-1])*2/N^2
+    
     MOD = 998244353
-    #print(((65+32*2+32*3)*inv_mod(pow(3*3,2,MOD),MOD))%MOD)
     N,K = myin_sp_i()
-    A = (1+(N-1)*(N-1))%MOD # 初期地点にある確率
-    B = 2 # それ以外にあるそれぞれの確率(全て同じ)
-    x = N*N%MOD
-    for k in range(K-1):
-        B = (B*B+(x-B)*(A+B*(N-2)))%MOD
-        A = (A*A+(x-A)*(B*(N-1)))%MOD
-        x = x*N*N%MOD
-    ans = (A+(N*(N+1)*inv_mod(2,MOD)-1)*B)*inv_mod(x,MOD)%MOD
-    print(ans)
-
+    if N==1:
+        print(1)
+        exit()
+    N_square_inv = inv_mod(N*N,MOD)
+    pr = 1
+    for k in range(K):
+        pr=(pr*(1+(N-1)*(N-1))+(1-pr)*2)%MOD*N_square_inv%MOD
+    ans=pr+(1-pr)*inv_mod(N-1,MOD)*(N*(N+1)*inv_mod(2,MOD)-1)
+    print(ans%MOD)
 if __name__ == "__main__":
     main()

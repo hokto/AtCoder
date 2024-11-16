@@ -16,16 +16,26 @@ def myin_sp_s():
     return list(map(str,myin_sp()))
 
 def main():
-    N = myin()
-    B = 50
-    dp = [[0 for i in range(10)] for j in range(B+1)]
-    for j in range(10):
-        dp[0][j]=j+1
-    for j in range(1,10):
-        dp[1][j]=10+j
-    for i in range(2,B+1):
-        for j in range(1,10):
-            dp[i][j]=dp[i-1][-1]
-
+    N = int(myin())
+    if N==1:
+        print(0)
+        exit()
+    N-=1
+    d_max = 9
+    d = 1
+    while N>d_max:
+        N-=d_max
+        if d%2==0:
+            d_max=d_max*10
+        d+=1
+    N+=10**((d-1)//2)-1
+    #if N>d_max:
+        #N-=d_max
+    #print(d_max,N)
+    ans = ["0"]*d
+    S_N = str(N)
+    for i in range(len(S_N)):
+        ans[i]=ans[d-1-i]=S_N[i]
+    print("".join(ans))
 if __name__ == "__main__":
     main()
