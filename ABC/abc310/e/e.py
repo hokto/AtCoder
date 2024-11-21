@@ -17,7 +17,16 @@ def myin_sp_s():
     return list(map(str,myin_sp()))
 
 def main():
-    pass
+    N = int(myin())
+    S = myin()
+    one_cnt = [0]*N
+    if S[0]=="1": one_cnt[0]=1
+    for i in range(1,N):
+        if S[i]=="1":
+            one_cnt[i]+=i+1-one_cnt[i-1]
+        else:
+            one_cnt[i]=i
+    print(sum(one_cnt))
 
 if __name__ == "__main__":
     main()
