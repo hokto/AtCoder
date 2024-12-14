@@ -17,23 +17,45 @@ def myin_sp_s():
     return list(map(str,myin_sp()))
 
 def main():
+    from collections import defaultdict
     N,M = myin_sp_i()
     S = myin_sp_i()
     X = myin_sp_i()
-    idx = {}
-    for i,x in enumerate(X):
-        idx[x] = i
-    dp = [[0]*(M+1) for i in range(N)] # dp[i][j]:=i番目までで良い数列を作り，X_jを選択した時のラッキーナンバーの最大個数(ただし，j=0の時はラッキーナンバー以外を選択)
-    for i in range(1,M+1):
-        dp[0][i] = 1
+    Even = defaultdict(int) # 先頭を0としたときに(0-indexeedで)偶数番目のもののそれぞれの個数
+    Odd = defaultdict(int) # 奇数番目のもの
+    Even[0]+=1 # 最初を0とするため
+    prev = 0
     for i in range(N-1):
-        s = S[i]
-        dp[i+1][0] = max(dp[i])
-        for j in range(M):
-            dp[i+1][j+1] = max(dp[i][j+1],dp[i][0])
-            if s-X[j] in idx:
-                dp[i+1][j+1] = max(dp[i+1][j+1],dp[i][idx[s-X[j]]+1]+1)
-    print(dp)
-    print(max(dp[-1]))
+        if i&1:
+            Even[S[i]-prev]+=1
+        else:
+            Odd[S[i]-prev]+=1
+        prev = S[i]-prev
+    
+    ans = 0
+    for o,_ in Odd.items():
+        # oをxに合わせる
+        for x in X:
+            p = o-x
+            res = 0
+            for x in X:
+                if x+p in Odd:
+                    res+=Odd[x+p]
+                if x-p in Even:
+                    res+=Even[x-p]
+            ans = max(ans,res)
+    for e,_ in Even.items():
+        # eをxに合わせる
+        for x in X:
+            p = x-o
+            res = 0
+            for x in X:
+                if x+p in Odd:
+                    res+=Odd[x+p]
+                if x-p in Even:
+                    res+=Even[x-p]
+            ans = max(ans,res)
+            
+    print(ans)
 if __name__ == "__main__":
     main()
